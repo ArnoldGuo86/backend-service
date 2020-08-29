@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Doc</title>
+</head>
+<body>
+	<table border="1">
+		<thead>
+			<tr>
+				<td>Method</td>
+				<th>Path</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<td>GET</td>
+				<td><a th:href="@{/index.html}">index.html</a></td>
+				<td>Login page</td>
+			</tr>
+
+			<tr>
+				<td>POST</td>
+				<td>/user/login</td>
+				<td>Login with email/password, and save token to cookie.</td>
+			</tr>
+			<tr>
+				<td>GET</td>
+				<td><a th:href="@{/heartbeat}">/heartbeat</a></td>
+				<td>Get version</td>
+			</tr>
+			<tr>
+				<td>GET</td>
+				<td>/user/{token}</td>
+				<td>Get user by specified token</td>
+			</tr>
+			<tr>
+				<td>GET</td>
+				<td>/user/id/{id}</td>
+				<td>Get user by specified id</td>
+			</tr>
+			<tr>
+				<td>POST</td>
+				<td>/user</td>
+				<td>Create a new user with specified user properties</td>
+			</tr>
+			<tr>
+				<td>PUT</td>
+				<td>/user</td>
+				<td>Update an user with specified user properties</td>
+			</tr>
+			<tr>
+				<td>DELETE</td>
+				<td>/user/{id}</td>
+				<td>DELETE an user with specified id</td>
+			</tr>
+			<tr>
+				<td>POST</td>
+				<td>/user/logout</td>
+				<td>Erase the login user info and remove user token stored</td>
+			</tr>
+			<tr>
+				<td>GET</td>
+				<td><a th:href="@{/swagger-ui.html}">/swagger-ui.html</a></td>
+				<td>swagger-ui</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

@@ -1,0 +1,36 @@
+#debug=true
+spring: 
+  messages: 
+    basename: i18n.login
+  thymeleaf: 
+    cache: false
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.0.102:3306/backend
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # druid
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+  mvc:    hiddenmethod:      filter:        enabled: true
+        
+server:
+  tomcat: 
+    uri-encoding: utf-8
+
+debug: true
+
+logging:  level:    com.mguo.mapper: DEBUG
+
+project:
+  version: x.y.z
+  
