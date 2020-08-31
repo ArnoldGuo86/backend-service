@@ -18,7 +18,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
@@ -28,21 +27,12 @@ import com.mguo.controller.BackendController;
 import com.mguo.entity.CommonResult;
 import com.mguo.entity.User;
 import com.mguo.service.BackendService;
-import com.mguo.service.TokenService;
-
-import cn.hutool.json.JSONObject;
 
 @SpringBootTest
 class BackndRestControllerTests {
 
 	@Autowired
-	private Environment env;
-
-	@Autowired
 	private BackendController backendController;
-
-	@Autowired
-	private TokenService tokenService;
 
 	@Test
 	void testUserLogin_200() throws IOException {
@@ -114,18 +104,6 @@ class BackndRestControllerTests {
 
 		backendController.userLogin(mockEmail, mockPassword, session, response);
 		assertEquals(cookies.size(), 0);
-	}
-
-//
-	@Test
-	public void testHeartBeat() {
-		String property = env.getProperty("project.version");
-		String json = backendController.getHeartbeat();
-
-		JSONObject jsonObj = new JSONObject(json);
-		String version = jsonObj.getStr("version");
-
-		assertEquals(property, version);
 	}
 
 //
