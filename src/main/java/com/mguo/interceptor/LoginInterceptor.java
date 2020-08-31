@@ -47,7 +47,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		if (!result) {
 			request.setAttribute("msg", "Not authorized, please login");
-			request.getRequestDispatcher("/").forward(request, response);
+			request.getRequestDispatcher("/index.html").forward(request, response);
 		}
 
 		return result;
