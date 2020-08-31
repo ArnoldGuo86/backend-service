@@ -27,7 +27,7 @@ public class MVCConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("/doc");
+		registry.addViewController("/").setViewName("doc");
 		registry.addViewController("/doc").setViewName("doc");
 		registry.addViewController("/index.html").setViewName("login");
 		registry.addViewController("/addUser").setViewName("add");
@@ -40,8 +40,9 @@ public class MVCConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginInterceptor(userMapper)).addPathPatterns("/**")
-				.excludePathPatterns("/index.html", "/", "/user/login", "/webjars/**", "/asserts/**");
+		registry.addInterceptor(new LoginInterceptor(userMapper)).addPathPatterns("/**").excludePathPatterns(
+				"/index.html", "/", "/user/login", "/webjars/**", "/asserts/**", "/heartbeat", "/swagger-ui.html",
+				"/swagger-ui/**","/v3/api-docs/**");
 	}
 
 	@Bean
