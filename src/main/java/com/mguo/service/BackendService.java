@@ -24,4 +24,8 @@ public interface BackendService {
 	public CommonResult<Void> updateUser(User user);
 
 	public CommonResult<Void> deleteUser(Integer id);
+	
+	public void test();
+	
+	public void saveUserTx(User user);
 }

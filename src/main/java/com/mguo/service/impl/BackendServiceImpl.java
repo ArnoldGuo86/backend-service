@@ -4,9 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mguo.entity.CommonResult;
 import com.mguo.entity.User;
@@ -112,5 +116,74 @@ public class BackendServiceImpl implements BackendService {
 	public CommonResult<Void> deleteUser(Integer id) {
 		userMapper.deleteUser(id);
 		return new CommonResult<>(200, "");
+	}
+
+	/**
+	 * Rollback is based on AOP proxy instance: Scenario 1:
+	 * 
+	 * 1. this.save1(requires_new)
+	 * 
+	 * 2. this.save2(required)
+	 * 
+	 * 3. 10/0(ArithmeticException throws)
+	 * 
+	 * step1 will roollback due to they are using same cglib instance
+	 * 
+	 * 
+	 * 1. anothService.save1(requires_new)
+	 * 
+	 * 2. this.save2(required)
+	 * 
+	 * 3. 10/0(ArithmeticException throws)
+	 * 
+	 * step1 won't roollback
+	 * 
+	 * Scenario 2:
+	 * 
+	 * 1. this.save1(requires_new)
+	 * 
+	 * 2. this.save2(required)
+	 * 
+	 * 3. 10/0(ArithmeticException throws)
+	 * 
+	 * step1 won't roollback
+	 * 
+	 * Scenario 3:
+	 * 
+	 * a. Adding spring-boot-starter-aop model in pom
+	 * b. Adding @EnableAspectJAutoProxy(exposeProxy = true) annotation to main config class
+	 * c. Cast AopContext.currentProxy() to current service
+	 * 
+	 * 1. service.save1(requires_new)
+	 * 
+	 * 2. this.save2(required)
+	 * 
+	 * 3. 10/0(ArithmeticException throws)
+	 * 
+	 * step1 won't roollback
+	 *
+	 */
+	@Transactional
+	public void test() {
+		User user = new User();
+		user.setEmail("999@email.com");
+		user.setFirst("999f");
+		user.setLast("999l");
+
+		BackendServiceImpl currentProxy = (BackendServiceImpl) AopContext.currentProxy();
+
+		currentProxy.saveUserTx(user);
+		currentProxy.saveTokenTx(user.getEmail(), "999999999999999");
+		int i = 10 / 0;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveUserTx(User user) {
+		userMapper.saveUser(user);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveTokenTx(String email, String token) {
+		userMapper.saveUserToken(email, token);
 	}
 }

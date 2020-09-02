@@ -151,4 +151,10 @@ public class BackendController {
 
 		return user;
 	}
+	
+	
+	@GetMapping("/test")
+	public void test() {
+		backendService.test();
+	}
 }

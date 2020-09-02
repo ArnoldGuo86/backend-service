@@ -11,7 +11,7 @@ import com.mguo.entity.User;
 import com.mguo.mapper.UserMapper;
 
 /*remove this when connect to real DB*/
-@Repository
+//@Repository
 public class UserMapperImpl implements UserMapper {
 
 	private static Map<Integer, User> mockUsers = new HashMap<Integer, User>();
